@@ -4,12 +4,17 @@ const bcrypt = require("bcryptjs");
 
 const {handleSchemaValidationErrors} = require("../helpers");
 
-const emailRegexp = /^[\w.]+@[\w]+.[\w]+$/;
+const emailRegexp = /[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/;
 
 const userSchema = new Schema({
+    name: {
+        type: String,
+        minlength: 2,
+        default: 'Guest',
+      },
     email: {
         type: String,
-        required: true,
+        required: [true, 'Email is required'],
         match: emailRegexp,
         unique: true,
     },
@@ -18,14 +23,19 @@ const userSchema = new Schema({
         minlength: 6,
         required: true,
     },
-    subscription: {
-      type: String,
-      enum: ["starter", "pro", "business"],
-      default: "starter",
-    },
-    avatarURL: {
+    googleId: {
         type: String,
-        required: true,
+    },
+    books: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'book',
+        },
+    ],
+    training: {
+        type: Schema.Types.ObjectId,
+        ref: 'training',
+        default: null,
     },
     token: {
         type: String,
@@ -58,13 +68,6 @@ const loginSchema = Joi.object({
     password: Joi.string().min(6).required(),
 });
 
-const updateSubscriptionSchema = Joi.object({
-    subscription: Joi.string()
-        .label('Subscription Type')
-        .valid("starter", "pro", "business")
-        .required(),
-});
-
 const verifyEmailSchema = Joi.object({
     email: Joi.string().pattern(emailRegexp).required(),
 });
@@ -72,7 +75,6 @@ const verifyEmailSchema = Joi.object({
 const schemas = {
     registerSchema,
     loginSchema,
-    updateSubscriptionSchema,
     verifyEmailSchema,
 }
 
