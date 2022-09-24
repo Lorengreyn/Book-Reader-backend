@@ -44,10 +44,10 @@ const bookSchema = new Schema({
     },
     status: {
         type: String,
-    enum: {
-        values: [bookStatus.PLAN, bookStatus.READ, bookStatus.DONE],
-        message: "This subscription isn't allowed",
-    },
+        enum: {
+            values: [bookStatus.PLAN, bookStatus.READ, bookStatus.DONE],
+            message: "This subscription isn't allowed",
+        },
         default: bookStatus.PLAN,
     },
     owner: {
@@ -62,7 +62,7 @@ bookSchema.post("save", handleSchemaValidationErrors)
 const addSchema = Joi.object({
     title: Joi.string().required(),
     author: Joi.string().required(),
-    status: Joi.bool(),
+    status: Joi.string().required(),
 });
 
 

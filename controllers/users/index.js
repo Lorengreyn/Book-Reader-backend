@@ -1,13 +1,11 @@
 const register = require('./signup');
 const login = require('./login');
 const logout = require('./logout');
-const verifyEmail = require('./verifyEmail');
-const resendVerifyEmail = require('./resendVerifyEmail');
+const current = require('./current');
 
 module.exports = {
   register,
   login,
   logout,
-  verifyEmail,
-  resendVerifyEmail,
+  current,
 };
