@@ -1,27 +1,39 @@
-const express = require("express");
+const express = require('express');
 
-const ctrl = require("../../controllers/users");
+const ctrl = require('../../controllers/users');
 
-const {ctrlWrapper} = require("../../helpers");
+const { ctrlWrapper } = require('../../helpers');
 
-const {validationBody, authenticate} = require("../../middlewares");
+const { validationBody, authenticate } = require('../../middlewares');
 
-const {schemas} = require("../../models/user");
+const { schemas } = require('../../models/user');
 
 const router = express.Router();
 
 // signup
-router.post("/signup", validationBody(schemas.registerSchema), ctrlWrapper(ctrl.register));
+router.post(
+  '/signup',
+  validationBody(schemas.registerSchema),
+  ctrlWrapper(ctrl.register),
+);
 
-router.get("/verify/:verificationToken", ctrlWrapper(ctrl.verifyEmail));
+router.get('/verify/:verificationToken', ctrlWrapper(ctrl.verifyEmail));
 
-router.post("/verify", validationBody(schemas.verifyEmailSchema), ctrlWrapper(ctrl.resendVerifyEmail));
+router.post(
+  '/verify',
+  validationBody(schemas.verifyEmailSchema),
+  ctrlWrapper(ctrl.resendVerifyEmail),
+);
 
 // signin
-router.post("/login", validationBody(schemas.loginSchema), ctrlWrapper(ctrl.login));
+router.post(
+  '/login',
+  validationBody(schemas.loginSchema),
+  ctrlWrapper(ctrl.login),
+);
 
-router.get("/logout", authenticate, ctrlWrapper(ctrl.logout));
+router.get('/logout', authenticate, ctrlWrapper(ctrl.logout));
 
-router.get("/current", authenticate, ctrlWrapper(ctrl.current));
+router.get('/current', authenticate, ctrlWrapper(ctrl.current));
 
 module.exports = router;
