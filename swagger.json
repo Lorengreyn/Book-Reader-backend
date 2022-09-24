@@ -1,9 +1,9 @@
 {
-  "openapi": "3.0.3",
+  "openapi": "3.0.1",
   "info": {
     "version": "1.0.1",
     "title": "Documentation for Book Reader",
-    "description": "Visual representation of queries for the front",
+    "description": "API documentation for the GoIT 'BookRead' project.",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
@@ -16,6 +16,10 @@
     {
       "name": "Auth",
       "description": "Authorization endpoints"
+    },
+    {
+      "name": "Books",
+      "description": "Books endpoints"
     }
   ],
   "paths": {
@@ -51,7 +55,7 @@
             "content": {}
           },
           "409": {
-            "description": "Provided email already exists",
+            "description": "Email already exist",
             "content": {}
           }
         }
@@ -60,22 +64,21 @@
     "/api/users/login": {
       "post": {
         "tags": ["Auth"],
-        "summery": "User authorization",
+        "summary": "User authorization",
         "parameters": [],
-        "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Authorization's object",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationRequest"
+                "$ref": "#/components/schemas/AuthorizationRequest"
               }
             }
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Successful operation",
             "content": {
               "application/json": {
@@ -89,8 +92,223 @@
             "description": "Bad request (invalid request body)",
             "content": {}
           },
-          "409": {
-            "description": "Provided email already exists",
+          "401": {
+            "description": "Email not found or password wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/current": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get user information",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body / Token not provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/logout": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "400": {
+            "description": "Invalid request body / Token not provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/books/": {
+      "get": {
+        "tags": ["Books"],
+        "summary": "Get all user's books",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllBooksResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body / Token not provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Books"],
+        "summary": "Get add user's book",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "requestBody": {
+          "description": "Book's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "400": {
+            "description": "Invalid request body / Token not provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/books/{id}": {
+      "get": {
+        "tags": ["Books"],
+        "summary": "Find book",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Book's id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookIdResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body / Token not provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Books"],
+        "summary": "Update book",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Book's id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookIdResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body / Token not provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Books"],
+        "summary": "Delete book",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Book's id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "400": {
+            "description": "Invalid request body / Token not provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
             "content": {}
           }
         }
@@ -101,7 +319,7 @@
     "schemas": {
       "RegistrationRequest": {
         "type": "object",
-        "required": ["email", "password"],
+        "required": ["email", "password", "repeatPassword"],
         "properties": {
           "email": {
             "type": "string",
@@ -109,6 +327,11 @@
             "format": "email"
           },
           "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          },
+          "repeatPassword": {
             "type": "string",
             "description": "User's password",
             "example": "qwerty123"
@@ -133,16 +356,146 @@
           }
         }
       },
+      "AuthorizationRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
       "AuthorizationResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "message": {
-              "type": "string",
-              "description": "Succesfull",
-              "example": "Succesfull"
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Session's access token (needed for all requests)",
+            "example": "eyJhbGciOiJIUzI1Ni15InR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZmMyMDg1YmQwOTM2NTI4MTA3Y2UyNzQiLCJaQaQiOiI1ZmMyZDJmY2UxZDIwNTA2NzAyYmRkMjIiLCJpYXQiOjE2MDY2MDM1MTYsImV4cCI6MTYwNjYwNzExNn0.rJ_QjU4KvA76H96RHsvOBChK0Vjbd0NmqjMxdQVJIXA"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              }
             }
+          }
+        }
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Guest"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "books": {
+            "type": "array",
+            "description": "User's books",
+            "example": ["book1", "book2"]
+          },
+          "training": {
+            "type": "array",
+            "description": "User's training",
+            "example": ["training1", "training2"]
+          }
+        }
+      },
+      "AllBooksResponse": {
+        "type": "object",
+        "properties": {
+          "books": {
+            "type": "array",
+            "description": "User's books",
+            "example": ["book1", "book2"]
+          }
+        }
+      },
+      "BookCreateRequest": {
+        "type": "object",
+        "required": ["title", "author", "year", "totalPages"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Book's title",
+            "example": "My book"
+          },
+          "author": {
+            "type": "string",
+            "description": "Book's author",
+            "example": "author"
+          },
+          "year": {
+            "type": "integer",
+            "description": "Book release year",
+            "example": "2000"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Number of pages in a book",
+            "example": "300"
+          }
+        }
+      },
+      "BookIdResponse": {
+        "type": "object",
+        "required": ["title", "author", "year", "totalPages"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Book's title",
+            "example": "My book"
+          },
+          "author": {
+            "type": "string",
+            "description": "Book's author",
+            "example": "author"
+          },
+          "year": {
+            "type": "integer",
+            "description": "Book release year",
+            "example": "2000"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Number of pages in a book",
+            "example": "300"
+          },
+          "readPages": {
+            "type": "integer",
+            "description": "number of pages read",
+            "example": "20"
+          },
+          "status": {
+            "type": "string",
+            "description": "page status",
+            "example": "plan"
+          },
+          "rating": {
+            "type": "number",
+            "description": "book rating",
+            "example": "3.5"
+          },
+          "resume": {
+            "type": "string",
+            "description": "Opinion about this book",
+            "example": "This book is very interesting"
           }
         }
       }

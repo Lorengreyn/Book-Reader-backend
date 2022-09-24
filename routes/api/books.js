@@ -24,7 +24,7 @@ router.post(
   validationBody(schemas.addSchema),
   ctrlWrapper(ctrl.add),
 );
-
+//нужно изменить на patch
 router.put(
   '/:id',
   isValidId,
