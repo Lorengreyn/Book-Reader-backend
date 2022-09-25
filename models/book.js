@@ -1,10 +1,10 @@
-
-const {Schema, model} = require("mongoose");
-const Joi = require("joi");
+const { Schema, model } = require('mongoose');
+const Joi = require('joi');
 
 const { handleSchemaValidationErrors } = require('../helpers');
 
-const bookSchema = new Schema({
+const bookSchema = new Schema(
+  {
     title: {
       type: String,
       required: [true, 'Title must be exist'],
@@ -40,8 +40,8 @@ const bookSchema = new Schema({
     },
     status: {
       type: String,
-      enum: ["plan", "read", "done"],
-      default: "plan",
+      enum: ['plan', 'read', 'done'],
+      default: 'plan',
     },
     owner: {
       type: Schema.Types.ObjectId,
@@ -55,21 +55,18 @@ const bookSchema = new Schema({
 bookSchema.post('save', handleSchemaValidationErrors);
 
 const addSchema = Joi.object({
-
-    title: Joi.string().required(),
-    author: Joi.string().required(),
-    status: Joi.string(),
-    year: Joi.number().required(),
-    totalPages: Joi.number().required(),
-    readPages: Joi.number(),
-
+  title: Joi.string().required(),
+  author: Joi.string().required(),
+  status: Joi.string(),
+  year: Joi.number().required(),
+  totalPages: Joi.number().required(),
+  readPages: Joi.number(),
 });
 const updateStatusSchema = Joi.object({
-  subscription: Joi.string()
-      .label('Status Type')
-      .valid("plan", "read", "done"),
+  subscription: Joi.string().label('Status Type').valid('plan', 'read', 'done'),
   readPages: Joi.number().required(),
-      
+  // проработать резюме. черновой вариант
+  resume: Joi.string(),
 });
 const schemas = {
   addSchema,

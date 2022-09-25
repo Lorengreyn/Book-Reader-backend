@@ -4,17 +4,20 @@ const { RequestError } = require('../../helpers');
 
 const updateById = async (req, res) => {
   const { id } = req.params;
-  const { readPages: pages } = req.body;
-
+  const { resume: review, readPages: pages } = req.body;
   const result = await Book.findById(id);
 
   if (!result) {
     throw RequestError(404, 'Not found');
   }
 
-  result.readPages += pages;
+  if (result.status === 'done') {
+    result.resume = review;
+  } else {
+    result.readPages += pages;
+  }
   if (result.readPages >= result.totalPages) {
-    result.status = 'done';
+    (result.status = 'done'), (result.readPages = result.totalPages);
   }
 
   await result.save();
@@ -22,3 +25,6 @@ const updateById = async (req, res) => {
 };
 
 module.exports = updateById;
+
+// Черновой вариант. логика работает только на одну книгу без проверки активна она или нет.
+// при статусе 'done' появляется доступ к отзыву
