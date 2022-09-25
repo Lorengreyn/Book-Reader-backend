@@ -1,7 +1,13 @@
-const { Schema, model } = require('mongoose');
-const Joi = require('joi');
+
+const {Schema, model} = require("mongoose");
+const Joi = require("joi");
+const { customAlphabet } = require("nanoid")
+const nanoid = customAlphabet('1234567890', 8)
+
 
 const { handleSchemaValidationErrors } = require('../helpers');
+
+const id = nanoid();
 
 const bookStatus = {
   PLAN: 'plan',
@@ -9,8 +15,13 @@ const bookStatus = {
   DONE: 'done',
 };
 
-const bookSchema = new Schema(
-  {
+
+const bookSchema = new Schema({
+    _id: {
+        type: String,
+        default: id,
+    },
+
     title: {
       type: String,
       required: [true, 'Title must be exist'],
@@ -64,11 +75,13 @@ const bookSchema = new Schema(
 bookSchema.post('save', handleSchemaValidationErrors);
 
 const addSchema = Joi.object({
-  title: Joi.string().required(),
-  author: Joi.string().required(),
-  status: Joi.string(),
-  year: Joi.number().required(),
-  totalPages: Joi.number().required(),
+
+    title: Joi.string().required(),
+    author: Joi.string().required(),
+    status: Joi.string(),
+    year: Joi.number().required(),
+    totalPages: Joi.number().required(),
+
 });
 
 const schemas = {

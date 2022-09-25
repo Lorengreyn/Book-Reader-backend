@@ -31,7 +31,7 @@ app.use((err, _, res, __) => {
   res.status(status).json({ message });
 });
 
-//GOOGLE
+// GOOGLE
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 

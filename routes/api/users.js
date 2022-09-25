@@ -24,6 +24,8 @@ router.post(
   ctrlWrapper(ctrl.login),
 );
 
+
+
 router.get('/logout', authenticate, ctrlWrapper(ctrl.logout));
 
 router.get('/current', authenticate, ctrlWrapper(ctrl.current));
