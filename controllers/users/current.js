@@ -1,4 +1,5 @@
 const { User } = require('../../models/user');
+const {Book} = require("../../models/book");
 
 const jwt = require('jsonwebtoken');
 
@@ -14,10 +15,13 @@ const current = async (req, res) => {
   if (!user || !user.token) {
     RequestError(401, 'Unauthorized');
   }
+  const {_id: owner} = req.user;
+ const book = await Book.find({owner},"-createdAt -updatedAt").populate('author',);
+
   res.json({
     name: user.name,
     email: user.email,
-    books: user.books,
+    books: book,
     training: user.training,
   });
 };

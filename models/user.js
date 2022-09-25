@@ -27,10 +27,11 @@ const userSchema = new Schema(
     googleId: {
       type: String,
     },
-    books: [
+    books:[ 
       {
         type: Schema.Types.ObjectId,
         ref: 'book',
+        required: true,
       },
     ],
     training: {
