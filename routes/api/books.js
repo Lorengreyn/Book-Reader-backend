@@ -24,11 +24,11 @@ router.post(
   validationBody(schemas.addSchema),
   ctrlWrapper(ctrl.add),
 );
-//нужно изменить на patch
-router.put(
+
+router.patch(
   '/:id',
   isValidId,
-  validationBody(schemas.addSchema),
+  validationBody(schemas.updateStatusSchema),
   ctrlWrapper(ctrl.updateById),
 );
 

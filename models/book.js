@@ -1,27 +1,10 @@
 
 const {Schema, model} = require("mongoose");
 const Joi = require("joi");
-const { customAlphabet } = require("nanoid")
-const nanoid = customAlphabet('1234567890', 8)
-
 
 const { handleSchemaValidationErrors } = require('../helpers');
 
-const id = nanoid();
-
-const bookStatus = {
-  PLAN: 'plan',
-  READ: 'read',
-  DONE: 'done',
-};
-
-
 const bookSchema = new Schema({
-    _id: {
-        type: String,
-        default: id,
-    },
-
     title: {
       type: String,
       required: [true, 'Title must be exist'],
@@ -57,11 +40,8 @@ const bookSchema = new Schema({
     },
     status: {
       type: String,
-      enum: {
-        values: [bookStatus.PLAN, bookStatus.READ, bookStatus.DONE],
-        message: "This subscription isn't allowed",
-      },
-      default: bookStatus.PLAN,
+      enum: ["plan", "read", "done"],
+      default: "plan",
     },
     owner: {
       type: Schema.Types.ObjectId,
@@ -81,11 +61,19 @@ const addSchema = Joi.object({
     status: Joi.string(),
     year: Joi.number().required(),
     totalPages: Joi.number().required(),
+    readPages: Joi.number(),
 
 });
-
+const updateStatusSchema = Joi.object({
+  subscription: Joi.string()
+      .label('Status Type')
+      .valid("plan", "read", "done"),
+  readPages: Joi.number().required(),
+      
+});
 const schemas = {
   addSchema,
+  updateStatusSchema,
 };
 
 const Book = model('book', bookSchema);

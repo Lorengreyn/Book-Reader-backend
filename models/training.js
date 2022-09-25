@@ -1,4 +1,8 @@
-const { Schema } = require('mongoose');
+const { Schema, model } = require('mongoose');
+const Joi = require("joi");
+
+const { handleSchemaValidationErrors } = require('../helpers');
+
 
 const trainingSchema = new Schema(
   {
@@ -21,9 +25,10 @@ const trainingSchema = new Schema(
         ref: 'book',
       },
     ],
-    user: {
+    owner: {
       type: Schema.Types.ObjectId,
       ref: 'user',
+      required: true,
     },
     result: {
       type: [
@@ -58,4 +63,21 @@ const trainingSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-module.exports = trainingSchema;
+trainingSchema.post('save', handleSchemaValidationErrors);
+
+const addSchema = Joi.object({
+  startDate: Joi.string().required(),
+  finishDate: Joi.string().required(),
+  inProgress: Joi.bool(),
+});
+
+const schemas = {
+  addSchema,
+};
+
+const Training = model('training', trainingSchema);
+
+module.exports = {
+  Training,
+  schemas,
+};
