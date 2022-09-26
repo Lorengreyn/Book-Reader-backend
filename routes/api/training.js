@@ -5,15 +5,17 @@ const ctrl = require('../../controllers/training');
 const { ctrlWrapper } = require('../../helpers');
 
 const {
-    authenticate,
-    validationBody,
-    isValidId,
-  } = require('../../middlewares');
-  
-  const { schemas } = require('../../models/book');
-  
-  const router = express.Router();
-  
-  router.get('/', authenticate, ctrlWrapper(ctrl.getAll));
+  authenticate,
+  validationBody,
+  isValidId,
+} = require('../../middlewares');
 
-  module.exports = router;
+const { schemas } = require('../../models/book');
+
+const router = express.Router();
+
+router.get('/', authenticate, ctrlWrapper(ctrl.getAll));
+
+router.post('/', authenticate, ctrlWrapper(ctrl.create));
+
+module.exports = router;
