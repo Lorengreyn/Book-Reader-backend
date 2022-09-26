@@ -13,13 +13,11 @@ const statistic = async (req, res) => {
   const training = await Training.findOne({ _id: id });
   
 
-const i = 0;
- let book = training.books[i];
-
+ let book ;
 
 
   for (let i = 0; i < training.books.length;) {
-    let el = await Book.findById(training.books[i]);
+    const el = await Book.findById(training.books[i]);
     if (el.status === 'done') {
       i++;continue;
     } else {
