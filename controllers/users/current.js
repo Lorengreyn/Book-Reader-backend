@@ -1,5 +1,6 @@
 const { User } = require('../../models/user');
 const {Book} = require("../../models/book");
+const { Training } = require("../../models/training");
 
 const jwt = require('jsonwebtoken');
 
@@ -17,12 +18,13 @@ const current = async (req, res) => {
   }
   const {_id: owner} = req.user;
  const book = await Book.find({owner},"-createdAt -updatedAt").populate();
+ const training = await Training.find({owner},"-createdAt -updatedAt").populate();
 
   res.json({
     name: user.name,
     email: user.email,
     books: book,
-    training: user.training,
+    training: training,
   });
 };
 

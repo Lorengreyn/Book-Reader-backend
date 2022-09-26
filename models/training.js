@@ -30,36 +30,30 @@ const trainingSchema = new Schema(
       ref: 'user',
       required: true,
     },
-    result: {
-      type: [
-        {
-          date: {
-            type: String,
-          },
-          plannedPages: {
-            type: Number,
-            default: 0,
-          },
-          factPages: {
-            type: Number,
-            default: 0,
-          },
-          stats: [
-            {
-              time: {
-                type: String,
-              },
-              pages: {
-                type: Number,
-                default: 0,
-              },
-            },
-          ],
-        },
-      ],
-      default: [],
+    date: {
+      type: String,
     },
-  },
+    plannedPages: {
+      type: String,
+      default: 0,
+    },
+    factPages: {
+      type: Number,
+      default: 0,
+    },
+    time: {
+      type: String,
+    },
+    dateNow:{
+      type: String,
+    },
+    pages: {
+      type: Number,
+      default: 0,
+    },
+    
+        },
+  
   { versionKey: false, timestamps: true }
 );
 
@@ -71,13 +65,20 @@ const addSchema = Joi.object({
   inProgress: Joi.bool(),
 });
 
-const schemas = {
+const statisticTrainingSchema = Joi.object({
+  dateNow: Joi.string().required(),
+  pages: Joi.number().required(),
+  time: Joi.string(),
+})
+
+const schemasTraining = {
   addSchema,
+  statisticTrainingSchema,
 };
 
 const Training = model('training', trainingSchema);
 
 module.exports = {
   Training,
-  schemas,
+  schemasTraining,
 };
