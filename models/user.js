@@ -22,12 +22,12 @@ const userSchema = new Schema(
     password: {
       type: String,
       minlength: 6,
-      required: true,
+      // required: true,
     },
     googleId: {
       type: String,
     },
-    books:[ 
+    books: [
       {
         type: Schema.Types.ObjectId,
         ref: 'book',
