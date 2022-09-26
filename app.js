@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const authRouter = require('./routes/api/users');
 const booksRouter = require('./routes/api/books');
+const trainingRouter = require('./routes/api/training');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(express.static('public'));
 
 app.use('/api/users', authRouter);
 app.use('/api/books', booksRouter);
+app.use('/api/training', trainingRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // app.use((_, res) => {
