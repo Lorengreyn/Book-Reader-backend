@@ -39,7 +39,7 @@ const trainingSchema = new Schema(
     },
     factPages: {
       type: Number,
-      default: null,
+      default: 0,
     },
     time: {
       type: String,

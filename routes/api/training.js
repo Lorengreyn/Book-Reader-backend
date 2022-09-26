@@ -20,7 +20,7 @@ router.get('/', authenticate, ctrlWrapper(ctrl.getAll));
 
 router.post('/', authenticate, ctrlWrapper(ctrl.create));
 
-router.post(
+router.patch(
   "/:idTraining",
   authenticate,
   validationBody(schemasTraining.statisticTrainingSchema),

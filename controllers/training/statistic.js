@@ -2,14 +2,15 @@ const { Training } = require("../../models/training");
 const { RequestError } = require("../../helpers");
 const moment = require ('moment');
 
-const statistic = async (req, res, next) => {
+const statistic = async (req, res) => {
   const { _id: owner } = req.user;
   const {id} = req.params;
   const { dateNow, pages } = req.body;
+  // const factPages = req.training;
   const time = moment().format( 'HH:mm:ss');
-  
-  const previosPages = Training.findOne(factPages);
-  console.log(previosPages);
+  // console.log(factPages);
+const previosPages = await Training.findOne({factPages:Training.factPages})
+console.log(previosPages);
   const sumPages = Math.round(previosPages + pages);
   const result = await Training.findOneAndUpdate({ owner }, 
     {
