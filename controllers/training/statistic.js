@@ -12,18 +12,14 @@ const statistic = async (req, res) => {
   const time = moment().format('HH:mm:ss');
   const training = await Training.findOne({ _id: id });
   
-//   let book;
-//   for(let i=0; i<array.length;){
-//     if(training.books[i] === "done"){
-//       i +=1
-//     }
-//   }
-//   // const book = training.books[i];
+
+const i = 0;
+ let book = training.books[i];
 
 
-let book;
+
   for (let i = 0; i < training.books.length;) {
-    let el = await Book.findOne(training.books[i]);
+    let el = await Book.findById(training.books[i]);
     if (el.status === 'done') {
       i++;continue;
     } else {
@@ -33,7 +29,7 @@ let book;
   }
 const result1 = await Book.findById(book);
   result1.readPages += pages;
-  if (result1.totalPages - result1.readPages <= pages) {
+  if (result1.readPages >= result1.totalPages) {
     result1.status = 'done';
     result1.readPages = result1.totalPages;
   }
