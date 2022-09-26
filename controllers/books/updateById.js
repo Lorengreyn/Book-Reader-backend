@@ -17,7 +17,8 @@ const updateById = async (req, res) => {
     result.readPages += pages;
   }
   if (result.readPages >= result.totalPages) {
-    (result.status = 'done'), (result.readPages = result.totalPages);
+    result.status = 'done';
+    result.readPages = result.totalPages;
   }
 
   await result.save();
