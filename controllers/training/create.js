@@ -15,7 +15,7 @@ const create = async (req, res) => {
   );
 
  
-  books.forEach(book => (book.status = 'read'));
+  books.forEach(book => [(book.status = 'read'), book.save()]);
 
 
   const totalPages = books.reduce(

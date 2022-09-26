@@ -1,6 +1,8 @@
 const { Training } = require('../../models/training');
+const { Book } = require('../../models/book');
 const { RequestError } = require('../../helpers');
 const moment = require('moment');
+
 
 const statistic = async (req, res) => {
   const { _id: owner } = req.user;
@@ -8,9 +10,30 @@ const statistic = async (req, res) => {
   const { dateNow, pages } = req.body;
 
   const time = moment().format('HH:mm:ss');
-  const traning = await Training.findOne({ _id: id });
+  const training = await Training.findOne({ _id: id });
+  
 
-  const sumPages = Math.round(traning.factPages + pages);
+ let book ;
+
+
+  for (let i = 0; i < training.books.length;) {
+    const el = await Book.findById(training.books[i]);
+    if (el.status === 'done') {
+      i++;continue;
+    } else {
+      book = el; break;
+    }
+    
+  }
+const result1 = await Book.findById(book);
+  result1.readPages += pages;
+  if (result1.readPages >= result1.totalPages) {
+    result1.status = 'done';
+    result1.readPages = result1.totalPages;
+  }
+  result1.save();
+
+  const sumPages = Math.round(training.factPages + pages);
   const result = await Training.findOneAndUpdate(
     { _id: id, owner },
     {
