@@ -20,6 +20,10 @@
     {
       "name": "Books",
       "description": "Books endpoints"
+    },
+    {
+      "name": "Trainings",
+      "description": "Trainings endpoints"
     }
   ],
   "paths": {
@@ -266,7 +270,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ChangePagesReadRequest"
+                "$ref": "#/components/schemas/ResumeRequest"
               }
             }
           }
@@ -283,7 +287,7 @@
             }
           },
           "400": {
-            "description": "Invalid request body / Token not provided",
+            "description": "Invalid request body / Token not provided / The book has not been read yet",
             "content": {}
           },
           "401": {
@@ -320,6 +324,124 @@
           },
           "401": {
             "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/training/": {
+      "get": {
+        "tags": ["Trainings"],
+        "summary": "Find all trainings",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllTrainingsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The user has no training yet",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Trainings"],
+        "summary": "Find all trainings",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "requestBody": {
+          "description": "Training's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrainingCreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The user has no training yet",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/training/{id}": {
+      "patch": {
+        "tags": ["Trainings"],
+        "summary": "Update Training",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Training's id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Training's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "400": {
+            "description": "Invalid request body / Token not provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
             "content": {}
           }
         }
@@ -510,14 +632,92 @@
           }
         }
       },
-      "ChangePagesReadRequest": {
+      "ResumeRequest": {
         "type": "object",
         "required": ["readPages"],
         "properties": {
-          "readPages": {
+          "resume": {
+            "type": "string",
+            "description": "book review",
+            "example": "Nice book"
+          }
+        }
+      },
+      "AllTrainingsResponse": {
+        "type": "object",
+        "properties": {
+          "trainings": {
+            "type": "array",
+            "description": "User's trainings",
+            "example": ["training1", "training2"]
+          }
+        }
+      },
+      "TrainingCreateRequest": {
+        "type": "object",
+        "required": ["startDate", "finishDate", "books"],
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "Start training date",
+            "example": "2022.09.25"
+          },
+          "finishDate": {
+            "type": "string",
+            "description": "Finish training date",
+            "example": "2022.10.25"
+          },
+          "books": {
+            "type": "array",
+            "description": "Book's in training",
+            "example": ["63309adcacc7eadfe882caa4", "6330aa66ee9eace8d8eedcdf"]
+          }
+        }
+      },
+      "TrainingCreateResponse": {
+        "type": "object",
+        "required": ["startDate", "finishDate", "books"],
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "Start training date",
+            "example": "2022.09.25"
+          },
+          "finishDate": {
+            "type": "string",
+            "description": "Finish training date",
+            "example": "2022.10.25"
+          },
+          "books": {
+            "type": "array",
+            "description": "Book's in training",
+            "example": ["63309adcacc7eadfe882caa4", "6330aa66ee9eace8d8eedcdf"]
+          },
+          "date": {
+            "type": "string",
+            "description": "Number of days in training",
+            "example": "15"
+          },
+          "plannedPages": {
+            "type": "string",
+            "description": "Planned number of pages per day",
+            "example": "30"
+          }
+        }
+      },
+      "TrainingUpdateRequest": {
+        "type": "object",
+        "required": ["dateNow", "pages"],
+        "properties": {
+          "dateNow": {
+            "type": "string",
+            "description": "Date of pages read",
+            "example": "2022.09.25"
+          },
+          "pages": {
             "type": "string",
             "description": "Number of pages",
-            "example": "25"
+            "example": "100"
           }
         }
       }
