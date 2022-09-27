@@ -57,7 +57,7 @@ router.get('/success', (req, res) => {
 });
 
 router.get('/failed', (req, res) => {
-  res.send(`Sorry something wrong`);
+  res.status(418).send(`Sorry something wrong`);
 });
 
 module.exports = router;
