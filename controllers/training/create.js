@@ -7,22 +7,18 @@ const create = async (req, res) => {
   const { _id: owner } = req.user;
   const { books: booksToTrain, startDate, finishDate } = req.body;
 
-
-  const findBooks = await Book.find({owner});
+  const findBooks = await Book.find({ owner });
 
   const books = findBooks.filter(book =>
     booksToTrain.includes(ObjectId(book._id).toString()),
   );
 
- 
   books.forEach(book => [(book.status = 'read'), book.save()]);
-
 
   const totalPages = books.reduce(
     (total, { totalPages }) => total + totalPages,
     0,
   );
-
 
   const finish = moment(finishDate.replace(/[.]/g, ''));
   const start = moment(startDate.replace(/[.]/g, ''));
@@ -30,7 +26,6 @@ const create = async (req, res) => {
 
   const plannedPages = Math.round(totalPages / days);
 
-   
   const training = await Training.create({
     startDate: startDate.replace(/[.]/g, ''),
     finishDate: finishDate.replace(/[.]/g, ''),
@@ -38,9 +33,8 @@ const create = async (req, res) => {
     owner: owner,
     date: String(days),
     plannedPages: plannedPages,
-    
   });
-  res.json(training);
+  res.status(201).json(training);
 };
 
 module.exports = create;

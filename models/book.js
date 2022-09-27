@@ -64,9 +64,9 @@ const addSchema = Joi.object({
 });
 const updateStatusSchema = Joi.object({
   subscription: Joi.string().label('Status Type').valid('plan', 'read', 'done'),
-  readPages: Joi.number().required(),
-  // проработать резюме. черновой вариант
-  resume: Joi.string(),
+  readPages: Joi.number(),
+
+  resume: Joi.string().required(),
 });
 const schemas = {
   addSchema,
@@ -79,3 +79,5 @@ module.exports = {
   Book,
   schemas,
 };
+
+//переработать статус схему. теперь используется только для резюме
