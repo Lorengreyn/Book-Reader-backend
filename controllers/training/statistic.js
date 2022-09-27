@@ -3,7 +3,6 @@ const { Book } = require('../../models/book');
 const { RequestError } = require('../../helpers');
 const moment = require('moment');
 
-
 const statistic = async (req, res) => {
   const { _id: owner } = req.user;
   const { id } = req.params;
@@ -11,21 +10,20 @@ const statistic = async (req, res) => {
 
   const time = moment().format('HH:mm:ss');
   const training = await Training.findOne({ _id: id });
-  
 
- let book ;
+  let book;
 
-
-  for (let i = 0; i < training.books.length;) {
+  for (let i = 0; i < training.books.length; ) {
     const el = await Book.findById(training.books[i]);
     if (el.status === 'done') {
-      i++;continue;
+      i++;
+      continue;
     } else {
-      book = el; break;
+      book = el;
+      break;
     }
-    
   }
-const result1 = await Book.findById(book);
+  const result1 = await Book.findById(book);
   result1.readPages += pages;
   if (result1.readPages >= result1.totalPages) {
     result1.status = 'done';
@@ -51,3 +49,6 @@ const result1 = await Book.findById(book);
 };
 
 module.exports = statistic;
+
+//сделать проверку что бы пользователь не смог внести брольше страниц чем осталось в книге
+// + это автоматически пофиксит проблему привышения тотала страниц тренинга
