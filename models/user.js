@@ -1,84 +1,82 @@
-const {Schema, model} = require("mongoose");
-const Joi = require("joi");
-const bcrypt = require("bcryptjs");
+const { Schema, model } = require('mongoose');
+const Joi = require('joi');
+const bcrypt = require('bcryptjs');
 
-const {handleSchemaValidationErrors} = require("../helpers");
+const { handleSchemaValidationErrors } = require('../helpers');
 
-const emailRegexp = /^[\w.]+@[\w]+.[\w]+$/;
+const emailRegexp = /[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/;
 
-const userSchema = new Schema({
+const userSchema = new Schema(
+  {
+    name: {
+      type: String,
+      minlength: 2,
+      default: 'Guest',
+    },
     email: {
-        type: String,
-        required: true,
-        match: emailRegexp,
-        unique: true,
+      type: String,
+      required: [true, 'Email is required'],
+      match: emailRegexp,
+      unique: true,
     },
     password: {
-        type: String,
-        minlength: 6,
-        required: true,
-    },
-    subscription: {
       type: String,
-      enum: ["starter", "pro", "business"],
-      default: "starter",
+      minlength: 6,
+      // required: true,
     },
-    avatarURL: {
-        type: String,
+    googleId: {
+      type: String,
+    },
+    books: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'book',
         required: true,
+      },
+    ],
+    training: {
+      type: Schema.Types.ObjectId,
+      ref: 'training',
+      default: null,
     },
     token: {
-        type: String,
-        default: ""
+      type: String,
+      default: '',
     },
-    verify: {
-        type: Boolean,
-        default: false,
-    },
-    verificationToken: {
-        type: String,
-        required: true,
-    }
-}, {versionKey: false, timestamps: true});
+  },
+  { versionKey: false, timestamps: true },
+);
 
-userSchema.post("save", handleSchemaValidationErrors);
+userSchema.post('save', handleSchemaValidationErrors);
 
 userSchema.methods.validatePassword = function (password) {
-    return bcrypt.compare(password, this.password);
-}
+  return bcrypt.compare(password, this.password);
+};
 
 const registerSchema = Joi.object({
-    email: Joi.string().pattern(emailRegexp).required(),
-    password: Joi.string().min(6).required(),
-    repeatPassword: Joi.string().required().valid(Joi.ref("password")),
+  email: Joi.string().pattern(emailRegexp).required(),
+  password: Joi.string().min(6).required(),
+  repeatPassword: Joi.string().required().valid(Joi.ref('password')),
 });
 
 const loginSchema = Joi.object({
-    email: Joi.string().pattern(emailRegexp).required(),
-    password: Joi.string().min(6).required(),
-});
-
-const updateSubscriptionSchema = Joi.object({
-    subscription: Joi.string()
-        .label('Subscription Type')
-        .valid("starter", "pro", "business")
-        .required(),
+  email: Joi.string().pattern(emailRegexp).required(),
+  password: Joi.string().min(6).required(),
 });
 
 const verifyEmailSchema = Joi.object({
-    email: Joi.string().pattern(emailRegexp).required(),
+  email: Joi.string().pattern(emailRegexp).required(),
 });
 
 const schemas = {
-    registerSchema,
-    loginSchema,
-    updateSubscriptionSchema,
-    verifyEmailSchema,
-}
+  registerSchema,
+  loginSchema,
+  verifyEmailSchema,
+};
 
-const User = model("user", userSchema);
+const User = model('user', userSchema);
 
 module.exports = {
-    User,
-    schemas,
-}
+  User,
+  schemas,
+};
