@@ -22,7 +22,6 @@ const userSchema = new Schema(
     password: {
       type: String,
       minlength: 6,
-      // required: true,
     },
     googleId: {
       type: String,
@@ -54,6 +53,7 @@ userSchema.methods.validatePassword = function (password) {
 };
 
 const registerSchema = Joi.object({
+  name: Joi.string().min(2).required(),
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
   repeatPassword: Joi.string().required().valid(Joi.ref('password')),
