@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.4",
+    "version": "1.1.0",
     "title": "Documentation for Book Reader",
     "description": "API documentation for the GoIT 'BookRead' project.",
     "license": {
@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "http://localhost:3000" }],
+  "servers": [{ "url": "https://book-reader-backend.herokuapp.com/" }],
   "tags": [
     {
       "name": "Auth",
@@ -148,6 +148,28 @@
           },
           "401": {
             "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/google": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Auth user from GoogleAuth, after redirected to start link ",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoogleRequest"
+                }
+              }
+            }
+          },
+          "418": {
+            "description": "Fail operation",
             "content": {}
           }
         }
@@ -718,6 +740,21 @@
             "type": "string",
             "description": "Number of pages",
             "example": "100"
+          }
+        }
+      },
+      "GoogleRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "User id",
+            "example": "User"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "example": "User@mail.com"
           }
         }
       }
