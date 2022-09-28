@@ -33,6 +33,7 @@ const create = async (req, res) => {
     owner: owner,
     date: String(days),
     plannedPages: plannedPages,
+    totalPages: totalPages,
   });
   res.status(201).json(training);
 };

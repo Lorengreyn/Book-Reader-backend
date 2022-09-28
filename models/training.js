@@ -1,8 +1,7 @@
 const { Schema, model } = require('mongoose');
-const Joi = require("joi");
+const Joi = require('joi');
 
 const { handleSchemaValidationErrors } = require('../helpers');
-
 
 const trainingSchema = new Schema(
   {
@@ -41,22 +40,17 @@ const trainingSchema = new Schema(
       type: Number,
       default: 0,
     },
-    
-    dateNow:[{
-      factDate:{
-      type: String,
-      },
-      time: {     
-      type: String,
-      },      
-      pages: {
+
+    dateNow: {
+      type: Array,
+      default: [],
+    },
+    totalPages: {
       type: Number,
-      default: 0,}
-    }],
-    
-        },
-  
-  { versionKey: false, timestamps: true }
+    },
+  },
+
+  { versionKey: false, timestamps: true },
 );
 
 trainingSchema.post('save', handleSchemaValidationErrors);
@@ -71,7 +65,7 @@ const statisticTrainingSchema = Joi.object({
   factDate: Joi.string().required(),
   pages: Joi.number().required(),
   time: Joi.array(),
-})
+});
 
 const schemasTraining = {
   addSchema,

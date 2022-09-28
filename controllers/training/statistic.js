@@ -7,22 +7,32 @@ const statistic = async (req, res) => {
   const { _id: owner } = req.user;
   const { id } = req.params;
   const { factDate, pages } = req.body;
-console.log(factDate);
+  console.log(factDate);
   const time = moment().format('HH:mm:ss');
   const training = await Training.findOne({ _id: id });
-  
-  const date = training.dateNow[-1];
-  if(factDate === date.factDate){
-    date.factDate = factDate;
-    date.time = time;
-    date.pages += pages;
+
+  let date;
+  if (training.dateNow.length !== 0) {
+    date = training.dateNow[training.dateNow.length - 1];
+    if (factDate === date.factDate) {
+      date.factDate = factDate;
+      date.time = time;
+      date.pages += pages;
+    } else {
+      training.dateNow.push({
+        factDate: factDate,
+        time: time,
+        pages: pages,
+      });
+    }
   } else {
-    date.push({
-      factDate,
-      time,
-      pages,
-    })
+    training.dateNow.push({
+      factDate: factDate,
+      time: time,
+      pages: pages,
+    });
   }
+
   let book;
 
   for (let i = 0; i < training.books.length; ) {
@@ -35,21 +45,20 @@ console.log(factDate);
       break;
     }
   }
-  
+
   const thisBook = await Book.findById(book);
   thisBook.readPages += pages;
   const diffPages = Math.round(thisBook.totalPages - thisBook.readPages);
-  
-   
-  if(pages > thisBook.totalPages || diffPages < 0){
+
+  if (pages > thisBook.totalPages || diffPages < 0) {
     throw RequestError(400, `Inserted pages can't be more than pages in book`);
-  };
+  }
   if (thisBook.readPages >= thisBook.totalPages) {
     thisBook.status = 'done';
-  }; 
+  }
   thisBook.save();
 
-console.log(pages);
+  console.log(pages);
   const sumPages = Math.round(training.factPages + pages);
   const result = await Training.findOneAndUpdate(
     { _id: id, owner },
@@ -62,8 +71,10 @@ console.log(pages);
   );
   if (!result) {
     throw RequestError(404, `training with id=${id} not found`);
-  };
-  
+  }
+  if (result.totalPages === result.factPages) {
+    res.status(200).json({ message: 'Мои витаннячка' });
+  }
   res.status(201).json(result);
 };
 
