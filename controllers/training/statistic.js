@@ -23,13 +23,21 @@ const statistic = async (req, res) => {
       break;
     }
   }
-  const result1 = await Book.findById(book);
-  result1.readPages += pages;
-  if (result1.readPages >= result1.totalPages) {
-    result1.status = 'done';
-    result1.readPages = result1.totalPages;
-  }
-  result1.save();
+  
+  const thisBook = await Book.findById(book);
+  thisBook.readPages += pages;
+  const diffPages = Math.round(thisBook.totalPages - thisBook.readPages);
+  console.log(diffPages);
+   
+  if(pages > thisBook.totalPages || diffPages < 0){
+    throw RequestError(400, `Inserted pages can't be more than pages in book`);
+  };
+  if (thisBook.readPages >= thisBook.totalPages) {
+    thisBook.status = 'done';
+  };
+ 
+ 
+  thisBook.save();
 
   const sumPages = Math.round(training.factPages + pages);
   const result = await Training.findOneAndUpdate(
@@ -49,6 +57,3 @@ const statistic = async (req, res) => {
 };
 
 module.exports = statistic;
-
-//сделать проверку что бы пользователь не смог внести брольше страниц чем осталось в книге
-// + это автоматически пофиксит проблему привышения тотала страниц тренинга
