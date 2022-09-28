@@ -1,11 +1,14 @@
 const { Training } = require('../../models/training');
 const { Book } = require('../../models/book');
 const { ObjectId } = require('mongodb');
+const { RequestError } = require('../../helpers');
 const moment = require('moment');
 
 const create = async (req, res) => {
   const { _id: owner } = req.user;
   const { books: booksToTrain, startDate, finishDate } = req.body;
+
+  
 
   const findBooks = await Book.find({ owner });
 
@@ -25,7 +28,11 @@ const create = async (req, res) => {
   const days = finish.diff(start, 'days');
 
   const plannedPages = Math.round(totalPages / days);
-
+  const noTraining = await Training.find({owner});
+  console.log(noTraining);
+  if(noTraining !== []){
+    throw RequestError(409,`Training already exist!`);
+  } else{
   const training = await Training.create({
     startDate: startDate.replace(/[.]/g, ''),
     finishDate: finishDate.replace(/[.]/g, ''),
@@ -35,7 +42,7 @@ const create = async (req, res) => {
     plannedPages: plannedPages,
     totalPages: totalPages,
   });
-  res.status(201).json(training);
+  res.status(201).json(training);}
 };
 
 module.exports = create;

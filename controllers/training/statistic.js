@@ -7,9 +7,17 @@ const statistic = async (req, res) => {
   const { _id: owner } = req.user;
   const { id } = req.params;
   const { factDate, pages } = req.body;
-  console.log(factDate);
+  
   const time = moment().format('HH:mm:ss');
   const training = await Training.findOne({ _id: id });
+
+  const currentDate = moment().format('dd:mm:yyyy');
+  if(currentDate > training.finishDate){
+    await Training.deleteOne({ _id: id});
+    res.status(200).json(`Well done!
+    but you need to be a little bit faster.
+    You can do it)`)
+  }
 
   let date;
   if (training.dateNow.length !== 0) {
@@ -49,7 +57,7 @@ const statistic = async (req, res) => {
   const thisBook = await Book.findById(book);
   thisBook.readPages += pages;
   const diffPages = Math.round(thisBook.totalPages - thisBook.readPages);
-
+console.log(diffPages);
   if (pages > thisBook.totalPages || diffPages < 0) {
     throw RequestError(400, `Inserted pages can't be more than pages in book`);
   }
@@ -58,7 +66,7 @@ const statistic = async (req, res) => {
   }
   thisBook.save();
 
-  console.log(pages);
+ 
   const sumPages = Math.round(training.factPages + pages);
   const result = await Training.findOneAndUpdate(
     { _id: id, owner },
