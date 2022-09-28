@@ -11,10 +11,13 @@ const statistic = async (req, res) => {
   const time = moment().format('HH:mm:ss');
   const training = await Training.findOne({ _id: id });
 
+  const finish = training.finishDate;
   const currentDate = moment().format('dd:mm:yyyy');
-  if(currentDate > training.finishDate){
+  const diff = currentDate.diff(finish, 'days')
+  console.log(currentDate);
+  if(diff < 0){
     await Training.deleteOne({ _id: id});
-    res.status(200).json(`Well done!
+    res.status(200, `Well done!
     but you need to be a little bit faster.
     You can do it)`)
   }

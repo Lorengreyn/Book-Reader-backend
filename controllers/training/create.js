@@ -23,8 +23,9 @@ const create = async (req, res) => {
     0,
   );
 
-  const finish = moment(finishDate.replace(/[.]/g, ''));
-  const start = moment(startDate.replace(/[.]/g, ''));
+  const finish = moment(finishDate).format('dd:mm:yyyy');
+  console.log(finish);
+  const start = moment(startDate).format('dd:mm:yyyy');
   const days = finish.diff(start, 'days');
 
   const plannedPages = Math.round(totalPages / days);
