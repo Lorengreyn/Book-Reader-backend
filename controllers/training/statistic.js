@@ -7,7 +7,7 @@ const statistic = async (req, res) => {
   const { _id: owner } = req.user;
   const { id } = req.params;
   const { factDate, pages } = req.body;
-  
+
   const time = moment().format('HH:mm:ss');
   const training = await Training.findOne({ _id: id });
 
@@ -17,12 +17,15 @@ const statistic = async (req, res) => {
   console.log(currentDate);
   const start = moment(currentDate.replace(/[.]/g, ''));
   const diff = start.diff(finish, 'days');
- 
-  if(diff < 0){
-    await Training.deleteOne({ _id: id});
-    res.status(200, `Well done!
+
+  if (diff < 0) {
+    await Training.deleteOne({ _id: id });
+    res.status(
+      200,
+      `Well done!
     but you need to be a little bit faster.
-    You can do it)`)
+    You can do it)`,
+    );
   }
 
   let date;
@@ -63,7 +66,7 @@ const statistic = async (req, res) => {
   const thisBook = await Book.findById(book);
   thisBook.readPages += pages;
   const diffPages = Math.round(thisBook.totalPages - thisBook.readPages);
-console.log(diffPages);
+  console.log(diffPages);
   if (pages > thisBook.totalPages || diffPages < 0) {
     throw RequestError(400, `Inserted pages can't be more than pages in book`);
   }
@@ -72,7 +75,6 @@ console.log(diffPages);
   }
   thisBook.save();
 
- 
   const sumPages = Math.round(training.factPages + pages);
   const result = await Training.findOneAndUpdate(
     { _id: id, owner },
@@ -87,9 +89,11 @@ console.log(diffPages);
     throw RequestError(404, `training with id=${id} not found`);
   }
   if (result.totalPages === result.factPages) {
-    res.status(200).json({ message: 'Мои витаннячка' });
+    res.status(200).json({ message: 'Мои витаннячка' }),
+      await Training.deleteOne({ _id: id });
+  } else {
+    res.status(201).json(result);
   }
-  res.status(201).json(result);
 };
 
 module.exports = statistic;
