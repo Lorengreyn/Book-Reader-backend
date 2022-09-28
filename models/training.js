@@ -41,16 +41,16 @@ const trainingSchema = new Schema(
       type: Number,
       default: 0,
     },
-    time: {
-      type: String,
-    },
-    dateNow:{
-      type: String,
-    },
-    pages: {
+    time: [{ timestamp:{     
+      type: String,}
+   }],
+    dateNow:[{factDate:{
+      type: String,}
+    }],
+    pages: [{pagesNow:{
       type: Number,
-      default: 0,
-    },
+      default: 0,}
+    }],
     
         },
   
@@ -66,9 +66,9 @@ const addSchema = Joi.object({
 });
 
 const statisticTrainingSchema = Joi.object({
-  dateNow: Joi.string().required(),
-  pages: Joi.number().required(),
-  time: Joi.string(),
+  factDate: Joi.string().required(),
+  pagesNow: Joi.number().required(),
+  time: Joi.array(),
 })
 
 const schemasTraining = {
