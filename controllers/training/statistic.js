@@ -12,21 +12,15 @@ const statistic = async (req, res) => {
   const training = await Training.findOne({ _id: id });
 
   const finish = training.finishDate;
-  console.log(finish);
-  const currentDate = moment().format('yyyy.mm.dd');
-  console.log(currentDate);
+  const currentDate = moment().format('yyyy.MM.DD');
+  
   const start = moment(currentDate.replace(/[.]/g, ''));
-  const diff = start.diff(finish, 'days');
 
-  if (diff < 0) {
-    await Training.deleteOne({ _id: id });
-    res.status(
-      200,
-      `Well done!
-    but you need to be a little bit faster.
-    You can do it)`,
-    );
-  }
+  const diff = start.diff(finish, 'days');
+console.log(diff);
+ 
+
+  
 
   let date;
   if (training.dateNow.length !== 0) {
@@ -66,7 +60,6 @@ const statistic = async (req, res) => {
   const thisBook = await Book.findById(book);
   thisBook.readPages += pages;
   const diffPages = Math.round(thisBook.totalPages - thisBook.readPages);
-  console.log(diffPages);
   if (pages > thisBook.totalPages || diffPages < 0) {
     throw RequestError(400, `Inserted pages can't be more than pages in book`);
   }
@@ -88,8 +81,11 @@ const statistic = async (req, res) => {
   if (!result) {
     throw RequestError(404, `training with id=${id} not found`);
   }
-  if (result.totalPages === result.factPages) {
-    res.status(200).json({ message: 'Мои витаннячка' }),
+  if (diff > 0) {
+    await Training.deleteOne({ _id: id });
+    res.status(200).json(`Well done! but you need to be a little bit faster.You can do it)`);
+  }else  if (result.totalPages === result.factPages) {
+    res.status(200).json({ message: 'Мои витаннячка' });
       await Training.deleteOne({ _id: id });
   } else {
     res.status(201).json(result);
