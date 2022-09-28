@@ -30,7 +30,7 @@ const create = async (req, res) => {
   const plannedPages = Math.round(totalPages / days);
   const noTraining = await Training.find({owner});
   console.log(noTraining);
-  if(noTraining !== []){
+  if(noTraining.length !== 0){
     throw RequestError(409,`Training already exist!`);
   } else{
   const training = await Training.create({
