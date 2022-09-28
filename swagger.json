@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "http://localhost:3000" }],
+  "servers": [{ "url": "https://book-reader-backend.herokuapp.com" }],
   "tags": [
     {
       "name": "Auth",
