@@ -6,12 +6,23 @@ const moment = require('moment');
 const statistic = async (req, res) => {
   const { _id: owner } = req.user;
   const { id } = req.params;
-  const { factDate, pagesNow } = req.body;
-
-  const timestamp = moment().format('HH:mm:ss');
+  const { factDate, pages } = req.body;
+console.log(factDate);
+  const time = moment().format('HH:mm:ss');
   const training = await Training.findOne({ _id: id });
   
-  
+  const date = training.dateNow[-1];
+  if(factDate === date.factDate){
+    date.factDate = factDate;
+    date.time = time;
+    date.pages += pages;
+  } else {
+    date.push({
+      factDate,
+      time,
+      pages,
+    })
+  }
   let book;
 
   for (let i = 0; i < training.books.length; ) {
@@ -26,11 +37,11 @@ const statistic = async (req, res) => {
   }
   
   const thisBook = await Book.findById(book);
-  thisBook.readPages += pagesNow;
+  thisBook.readPages += pages;
   const diffPages = Math.round(thisBook.totalPages - thisBook.readPages);
   
    
-  if(pagesNow > thisBook.totalPages || diffPages < 0){
+  if(pages > thisBook.totalPages || diffPages < 0){
     throw RequestError(400, `Inserted pages can't be more than pages in book`);
   };
   if (thisBook.readPages >= thisBook.totalPages) {
@@ -38,15 +49,14 @@ const statistic = async (req, res) => {
   }; 
   thisBook.save();
 
-console.log(pagesNow);
-  const sumPages = Math.round(training.factPages + pagesNow);
+console.log(pages);
+  const sumPages = Math.round(training.factPages + pages);
   const result = await Training.findOneAndUpdate(
     { _id: id, owner },
 
-    {factPages: sumPages,
-      $push:{dateNow:{factDate},      
-      time:{timestamp},
-      pages:{pagesNow}},
+    {
+      factPages: sumPages,
+      dateNow: training.dateNow,
     },
     { new: true },
   );
