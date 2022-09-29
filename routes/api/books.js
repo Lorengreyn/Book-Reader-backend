@@ -28,6 +28,7 @@ router.post(
 router.patch(
   '/:id',
   isValidId,
+  authenticate,
   validationBody(schemas.updateStatusSchema),
   ctrlWrapper(ctrl.updateById),
 );
