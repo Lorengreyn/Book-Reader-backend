@@ -11,7 +11,6 @@ const googleSettings = {
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: 'https://book-reader-backend.herokuapp.com/api/users/google/callback',
-  // 'http://localhost:3000/api/users/google/callback',
 };
 
 passport.use(
