@@ -11,7 +11,7 @@ const userSchema = new Schema(
     name: {
       type: String,
       minlength: 2,
-      default: 'Guest',
+      required: true,
     },
     email: {
       type: String,
@@ -53,7 +53,7 @@ userSchema.methods.validatePassword = function (password) {
 };
 
 const registerSchema = Joi.object({
-  name: Joi.string().min(2).required(),
+  name: Joi.string().required(),
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
   repeatPassword: Joi.string().required().valid(Joi.ref('password')),
