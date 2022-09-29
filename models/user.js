@@ -33,11 +33,11 @@ const userSchema = new Schema(
         required: true,
       },
     ],
-    training: {
+    training: [{
       type: Schema.Types.ObjectId,
       ref: 'training',
       default: [],
-    },
+    }],
     token: {
       type: String,
       default: '',
