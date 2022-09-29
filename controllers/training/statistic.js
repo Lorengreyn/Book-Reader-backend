@@ -82,8 +82,8 @@ console.log(diff);
     throw RequestError(404, `training with id=${id} not found`);
   }
   if (diff > 0) {
-    await Training.deleteOne({ _id: id });
-    res.status(200).json(`Well done! but you need to be a little bit faster.You can do it)`);
+    await Training.findById({ _id: id });
+    res.json(diffPages);
   }else  if (result.totalPages === result.factPages) {
     res.status(200).json({ message: 'Мои витаннячка' });
       await Training.deleteOne({ _id: id });

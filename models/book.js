@@ -35,7 +35,7 @@ const bookSchema = new Schema(
     },
     resume: {
       type: String,
-      maxLength: 300,
+      maxLength: 1000,
       default: '',
     },
     status: {
@@ -55,8 +55,8 @@ const bookSchema = new Schema(
 bookSchema.post('save', handleSchemaValidationErrors);
 
 const addSchema = Joi.object({
-  title: Joi.string().required(),
-  author: Joi.string().required(),
+  title: Joi.string().min(1).required(),
+  author: Joi.string().min(1).required(),
   status: Joi.string(),
   year: Joi.number().required(),
   totalPages: Joi.number().required(),
@@ -79,5 +79,3 @@ module.exports = {
   Book,
   schemas,
 };
-
-//переработать статус схему. теперь используется только для резюме
