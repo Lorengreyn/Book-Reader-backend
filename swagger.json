@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.2.0",
+    "version": "1.2.1",
     "title": "Documentation for Book Reader",
     "description": "API documentation for the GoIT 'BookRead' project.",
     "license": {
@@ -672,6 +672,11 @@
             "type": "string",
             "description": "book review",
             "example": "Nice book"
+          },
+          "rating": {
+            "type": "number",
+            "description": "book rating",
+            "example": 4
           }
         }
       },
