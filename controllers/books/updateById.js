@@ -14,10 +14,11 @@ const updateById = async (req, res) => {
 
   if (result.status === 'done') {
     result.resume = review;
+    await result.save();
+    res.json(result);
+  } else {
+    res.json({ message: 'Эта книга еще не прочитана' });
   }
-
-  await result.save();
-  res.json(result);
 };
 
 module.exports = updateById;

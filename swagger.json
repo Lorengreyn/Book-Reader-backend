@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.1.0",
+    "version": "1.2.0",
     "title": "Documentation for Book Reader",
     "description": "API documentation for the GoIT 'BookRead' project.",
     "license": {
@@ -275,7 +275,7 @@
       },
       "patch": {
         "tags": ["Books"],
-        "summary": "Update book",
+        "summary": "Add a review",
         "security": [{ "Bearer": [] }],
         "parameters": [
           {
@@ -474,8 +474,13 @@
     "schemas": {
       "RegistrationRequest": {
         "type": "object",
-        "required": ["email", "password", "repeatPassword"],
+        "required": ["name", "email", "password", "repeatPassword"],
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "user"
+          },
           "email": {
             "type": "string",
             "description": "User's email",
@@ -498,6 +503,11 @@
         "items": {
           "type": "object",
           "properties": {
+            "name": {
+              "type": "string",
+              "description": "User's name",
+              "example": "user"
+            },
             "email": {
               "type": "string",
               "description": "User's email",
@@ -682,7 +692,7 @@
           "startDate": {
             "type": "string",
             "description": "Start training date",
-            "example": "2022.09.25"
+            "example": "2022.09.30"
           },
           "finishDate": {
             "type": "string",
@@ -729,17 +739,17 @@
       },
       "TrainingUpdateRequest": {
         "type": "object",
-        "required": ["dateNow", "pages"],
+        "required": ["factDate", "pages"],
         "properties": {
-          "dateNow": {
+          "factDate": {
             "type": "string",
             "description": "Date of pages read",
-            "example": "2022.09.25"
+            "example": "2022.10.10"
           },
           "pages": {
             "type": "string",
             "description": "Number of pages",
-            "example": "100"
+            "example": 100
           }
         }
       },
