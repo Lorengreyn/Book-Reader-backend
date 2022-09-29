@@ -4,7 +4,7 @@ const { RequestError } = require('../../helpers');
 
 const updateById = async (req, res) => {
   const { id } = req.params;
-  const { resume: review, readPages: pages } = req.body;
+  const { resume: review, rating } = req.body;
 
   const result = await Book.findById(id);
 
@@ -14,6 +14,7 @@ const updateById = async (req, res) => {
 
   if (result.status === 'done') {
     result.resume = review;
+    resume.rating = rating;
     await result.save();
     res.json(result);
   } else {
