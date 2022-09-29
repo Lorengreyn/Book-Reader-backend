@@ -1,7 +1,9 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.7",
+
+    "version": "1.2.1",
+
     "title": "Documentation for Book Reader",
     "description": "API documentation for the GoIT 'BookRead' project.",
     "license": {
@@ -11,7 +13,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "http://localhost:3000" }],
+  "servers": [{ "url": "https://book-reader-backend.herokuapp.com/" }],
   "tags": [
     {
       "name": "Auth",
@@ -275,7 +277,7 @@
       },
       "patch": {
         "tags": ["Books"],
-        "summary": "Update book",
+        "summary": "Add a review",
         "security": [{ "Bearer": [] }],
         "parameters": [
           {
@@ -474,8 +476,13 @@
     "schemas": {
       "RegistrationRequest": {
         "type": "object",
-        "required": ["email", "password", "repeatPassword"],
+        "required": ["name", "email", "password", "repeatPassword"],
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "user"
+          },
           "email": {
             "type": "string",
             "description": "User's email",
@@ -498,6 +505,11 @@
         "items": {
           "type": "object",
           "properties": {
+            "name": {
+              "type": "string",
+              "description": "User's name",
+              "example": "user"
+            },
             "email": {
               "type": "string",
               "description": "User's email",
@@ -662,6 +674,11 @@
             "type": "string",
             "description": "book review",
             "example": "Nice book"
+          },
+          "rating": {
+            "type": "number",
+            "description": "book rating",
+            "example": 4
           }
         }
       },
@@ -682,7 +699,7 @@
           "startDate": {
             "type": "string",
             "description": "Start training date",
-            "example": "2022.09.25"
+            "example": "2022.09.30"
           },
           "finishDate": {
             "type": "string",
@@ -729,17 +746,32 @@
       },
       "TrainingUpdateRequest": {
         "type": "object",
-        "required": ["dateNow", "pages"],
+        "required": ["factDate", "pages"],
         "properties": {
-          "dateNow": {
+          "factDate": {
             "type": "string",
             "description": "Date of pages read",
-            "example": "2022.09.25"
+            "example": "2022.10.10"
           },
           "pages": {
             "type": "string",
             "description": "Number of pages",
-            "example": "100"
+            "example": 100
+          }
+        }
+      },
+      "GoogleRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "User id",
+            "example": "User"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "example": "User@mail.com"
           }
         }
       },

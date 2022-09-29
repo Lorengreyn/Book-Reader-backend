@@ -10,8 +10,6 @@ const {
   isValidId,
 } = require('../../middlewares');
 
-const { schemas } = require('../../models/book');
-
 const { schemasTraining } = require('../../models/training');
 
 const router = express.Router();

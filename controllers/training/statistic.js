@@ -6,10 +6,43 @@ const moment = require('moment');
 const statistic = async (req, res) => {
   const { _id: owner } = req.user;
   const { id } = req.params;
-  const { dateNow, pages } = req.body;
+  const { factDate, pages } = req.body;
 
   const time = moment().format('HH:mm:ss');
   const training = await Training.findOne({ _id: id });
+
+  const finish = training.finishDate;
+  const currentDate = moment().format('yyyy.MM.DD');
+  
+  const start = moment(currentDate.replace(/[.]/g, ''));
+
+  const diff = start.diff(finish, 'days');
+console.log(diff);
+ 
+
+  
+
+  let date;
+  if (training.dateNow.length !== 0) {
+    date = training.dateNow[training.dateNow.length - 1];
+    if (factDate === date.factDate) {
+      date.factDate = factDate;
+      date.time = time;
+      date.pages += pages;
+    } else {
+      training.dateNow.push({
+        factDate: factDate,
+        time: time,
+        pages: pages,
+      });
+    }
+  } else {
+    training.dateNow.push({
+      factDate: factDate,
+      time: time,
+      pages: pages,
+    });
+  }
 
   let book;
 
@@ -23,32 +56,40 @@ const statistic = async (req, res) => {
       break;
     }
   }
-  const result1 = await Book.findById(book);
-  result1.readPages += pages;
-  if (result1.readPages >= result1.totalPages) {
-    result1.status = 'done';
-    result1.readPages = result1.totalPages;
+
+  const thisBook = await Book.findById(book);
+  thisBook.readPages += pages;
+  const diffPages = Math.round(thisBook.totalPages - thisBook.readPages);
+  if (pages > thisBook.totalPages || diffPages < 0) {
+    throw RequestError(400, `Inserted pages can't be more than pages in book`);
   }
-  result1.save();
+  if (thisBook.readPages >= thisBook.totalPages) {
+    thisBook.status = 'done';
+  }
+  thisBook.save();
 
   const sumPages = Math.round(training.factPages + pages);
   const result = await Training.findOneAndUpdate(
     { _id: id, owner },
+
     {
-      dateNow: dateNow,
-      time: time,
       factPages: sumPages,
-      pages: pages,
+      dateNow: training.dateNow,
     },
     { new: true },
   );
   if (!result) {
     throw RequestError(404, `training with id=${id} not found`);
   }
-  res.status(201).json(result);
+  if (diff > 0) {
+    await Training.findById({ _id: id });
+    res.json(diffPages);
+  }else  if (result.totalPages === result.factPages) {
+    res.status(200).json({ message: 'Мои витаннячка' });
+      await Training.deleteOne({ _id: id });
+  } else {
+    res.status(201).json(result);
+  }
 };
 
 module.exports = statistic;
-
-//сделать проверку что бы пользователь не смог внести брольше страниц чем осталось в книге
-// + это автоматически пофиксит проблему привышения тотала страниц тренинга

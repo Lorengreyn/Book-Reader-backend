@@ -11,7 +11,7 @@ const userSchema = new Schema(
     name: {
       type: String,
       minlength: 2,
-      default: 'Guest',
+      required: true,
     },
     email: {
       type: String,
@@ -22,7 +22,6 @@ const userSchema = new Schema(
     password: {
       type: String,
       minlength: 6,
-      // required: true,
     },
     googleId: {
       type: String,
@@ -37,7 +36,7 @@ const userSchema = new Schema(
     training: {
       type: Schema.Types.ObjectId,
       ref: 'training',
-      default: null,
+      default: [],
     },
     token: {
       type: String,
@@ -54,6 +53,7 @@ userSchema.methods.validatePassword = function (password) {
 };
 
 const registerSchema = Joi.object({
+  name: Joi.string().required(),
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
   repeatPassword: Joi.string().required().valid(Joi.ref('password')),
