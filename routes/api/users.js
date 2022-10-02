@@ -49,7 +49,7 @@ router.get(
   }),
 );
 
-router.get('/success',{ successRedirect: 'http://localhost:3000/book-reader-frontend/library'} ,(req, res) => {
+router.get('/success', (req, res) => {
   res.send(`Welcome name - ${req.user.name},
   id - ${req.user.id},
   email - ${req.user.email},
