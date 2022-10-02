@@ -49,7 +49,7 @@ router.get(
   }),
 );
 
-router.get('/success', (req, res) => {
+router.get('/library', (req, res) => {
   res.send(`Welcome name - ${req.user.name},
   id - ${req.user.id},
   email - ${req.user.email},
