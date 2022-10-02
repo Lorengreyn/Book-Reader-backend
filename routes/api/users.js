@@ -42,20 +42,20 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    successRedirect: 'http://localhost:3000/book-reader-frontend/library',
+    successRedirect: '/success',
   }),
   passport.authenticate('google', {
     failureRedirect: '/api/users/failed',
   }),
 );
 
-// router.get('/success', (req, res) => {
-//   // res.send(`Welcome name - ${req.user.name},
-//   // id - ${req.user.id},
-//   // email - ${req.user.email},
-//   //  `);
-//   successRedirect: 'http://localhost:3000/book-reader-frontend/library'
-// });
+router.get('/success',{ successRedirect: 'http://localhost:3000/book-reader-frontend/library'} ,(req, res) => {
+  res.send(`Welcome name - ${req.user.name},
+  id - ${req.user.id},
+  email - ${req.user.email},
+   `);
+ 
+});
 
 router.get('/failed', (req, res) => {
   res.status(418).send(`Sorry something wrong`);
