@@ -34,16 +34,16 @@ router.get('/current', authenticate, ctrlWrapper(ctrl.current));
 // GOOGLE
 
 router.get(
-  '/google', 
+  '/google', (req, res) => {
+    res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "*");},
    passport.authenticate('google', {
     scope: ['email', 'profile'],
   }),
 );
 
 router.get(
-  '/google/callback',(req, res) => {
-    res.set("Access-Control-Allow-Origin", "*");
-  res.set("Access-Control-Allow-Methods", "*");},
+  '/google/callback',
  passport.authenticate('google', {
     successRedirect: '/success',
   }),
