@@ -35,9 +35,9 @@ router.get('/current', authenticate, ctrlWrapper(ctrl.current));
 
 router.get(
   '/google', (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
-  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");},
+    res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+  res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");},
    passport.authenticate('google', {
     scope: ['email', 'profile'],
   }),
