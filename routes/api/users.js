@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 const ctrl = require('../../controllers/users');
 
@@ -33,14 +34,14 @@ router.get('/current', authenticate, ctrlWrapper(ctrl.current));
 // GOOGLE
 
 router.get(
-  '/google',
+  '/google', cors(),
   passport.authenticate('google', {
     scope: ['email', 'profile'],
   }),
 );
 
 router.get(
-  '/google/callback',
+  '/google/callback',cors(),
   passport.authenticate('google', {
     successRedirect: '/success',
   }),
@@ -49,7 +50,7 @@ router.get(
   }),
 );
 
-router.get('/success', (req, res) => {
+router.get('/success', cors(),(req, res) => {
   res.send(`Welcome name - ${req.user.name},
   id - ${req.user.id},
   email - ${req.user.email},
