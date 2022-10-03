@@ -3,7 +3,7 @@ const express = require('express');
 
 const ctrl = require('../../controllers/users');
 
-const { ctrlWrapper, isLoggedIn } = require('../../helpers');
+const { ctrlWrapper } = require('../../helpers');
 
 const { validationBody, authenticate } = require('../../middlewares');
 
@@ -42,7 +42,7 @@ router.get(
 
 router.get(
   '/google/callback',
- passport.authenticate('google', isLoggedIn,{
+ passport.authenticate('google', {
     successRedirect: 'http://localhost:3000/book-reader-frontend/library',
     
   }),
