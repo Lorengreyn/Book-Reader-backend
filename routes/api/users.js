@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors');
+
 
 const ctrl = require('../../controllers/users');
 
@@ -34,7 +34,7 @@ router.get('/current', authenticate, ctrlWrapper(ctrl.current));
 // GOOGLE
 
 router.get(
-  '/google', cors(),(req, res) => {
+  '/google', (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');},
   passport.authenticate('google', {
     scope: ['email', 'profile'],
@@ -42,7 +42,7 @@ router.get(
 );
 
 router.get(
-  '/google/callback',cors(),(req, res) => {res.set('Access-Control-Allow-Origin', '*');},
+  '/google/callback',(req, res) => {res.set('Access-Control-Allow-Origin', '*');},
   passport.authenticate('google', {
     successRedirect: '/success',
   }),
@@ -51,7 +51,7 @@ router.get(
   }),
 );
 
-router.get('/success', cors(),(req, res) => {
+router.get('/success', (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.send(`Welcome name - ${req.user.name},
   id - ${req.user.id},
