@@ -42,14 +42,13 @@ router.get(
 )});
 
 router.get(
-  '/google/callback',(req, res) => {res.set('Access-Control-Allow-Origin', '*');
-  res.send(passport.authenticate('google', {
+  '/google/callback',
+ passport.authenticate('google', {
     successRedirect: '/success',
   }),
   passport.authenticate('google', {
     failureRedirect: '/api/users/failed',
-  }))},
-);
+  }));
 
 router.get('/success', (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
