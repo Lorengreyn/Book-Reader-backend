@@ -33,7 +33,7 @@ router.get('/current', authenticate, ctrlWrapper(ctrl.current));
 
 // GOOGLE
 router.get('/', (req, res)=>{
-  res.send('<a href="/api/users/google"></a>')
+  res.redirect('/api/users/google')
 })
 router.get(
   '/google', 
