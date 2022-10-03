@@ -34,7 +34,8 @@ router.get('/current', authenticate, ctrlWrapper(ctrl.current));
 // GOOGLE
 
 router.get(
-  '/google', cors(),
+  '/google', cors(),(req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');},
   passport.authenticate('google', {
     scope: ['email', 'profile'],
   }),
@@ -51,6 +52,7 @@ router.get(
 );
 
 router.get('/success', cors(),(req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
   res.send(`Welcome name - ${req.user.name},
   id - ${req.user.id},
   email - ${req.user.email},
