@@ -47,11 +47,13 @@ router.get(
     
   }),
   passport.authenticate('google', {
+    
     failureRedirect: '/api/users/failed',
   }));
 
 router.get('/success', (req, res) => {
- res.redirect(req.isLoggedIn=true,'http://localhost:3000/book-reader-frontend/library');
+  res.send(req.isLoggedIn=true);
+ res.redirect('http://localhost:3000/book-reader-frontend/library');
 });
 
 router.get('/failed', (req, res) => {
