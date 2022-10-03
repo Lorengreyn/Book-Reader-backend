@@ -3,7 +3,7 @@ const express = require('express');
 
 const ctrl = require('../../controllers/users');
 
-const { ctrlWrapper } = require('../../helpers');
+const { ctrlWrapper, isLoggedIn } = require('../../helpers');
 
 const { validationBody, authenticate } = require('../../middlewares');
 
@@ -32,7 +32,9 @@ router.get('/logout', authenticate, ctrlWrapper(ctrl.logout));
 router.get('/current', authenticate, ctrlWrapper(ctrl.current));
 
 // GOOGLE
-
+router.get('/', (req, res)=>{
+  res.send('<a href="/google"></a>')
+})
 router.get(
   '/google', 
    passport.authenticate('google', {
@@ -43,18 +45,15 @@ router.get(
 router.get(
   '/google/callback',
  passport.authenticate('google', {
-    successRedirect: 'http://localhost:3000/book-reader-frontend/library',
+    successRedirect: '/api/users/success',
     
   }),
   passport.authenticate('google', {
     failureRedirect: '/api/users/failed',
   }));
 
-router.get('/success', (req, res) => {
-  res.send(`Welcome name - ${req.user.name},
-  id - ${req.user.id},
-  email - ${req.user.email},
-   `);
+router.get('/success', isLoggedIn, (req, res) => {
+ res.redirect('http://localhost:3000/book-reader-frontend/library'),
  
 });
 
