@@ -23,7 +23,6 @@ passport.use(
           name: profile.displayName,
           email: profile.emails[0].value,
           googleId: profile.id,
-          isLoggedIn: true,
         };
 
         User.findOne({ googleId: profile.id }).then(async currentUser => {
