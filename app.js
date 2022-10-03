@@ -13,10 +13,6 @@ const booksRouter = require('./routes/api/books');
 const trainingRouter = require('./routes/api/training');
 
 const app = express();
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "localhost:3000");
-  next();
-});
 
 app.use(
   cookieSession({
@@ -35,7 +31,9 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
 app.use(logger(formatsLogger));
-app.use(cors('*'));
+app.use(cors({
+  origin: '*'
+}));
 app.use(express.json());
 app.use(express.static('public'));
 
