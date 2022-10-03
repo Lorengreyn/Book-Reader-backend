@@ -51,8 +51,7 @@ router.get(
   }));
 
 router.get('/success', (req, res) => {
-  res.send(isLoggedIn=true);
- res.redirect('http://localhost:3000/book-reader-frontend/library');
+ res.redirect(isLoggedIn=true,'http://localhost:3000/book-reader-frontend/library');
 });
 
 router.get('/failed', (req, res) => {
