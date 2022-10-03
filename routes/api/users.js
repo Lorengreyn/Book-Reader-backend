@@ -41,11 +41,11 @@ router.get(
 );
 
 router.get(
-  '/google/callback',
- passport.authenticate('google',(req, res) => {
+  '/google/callback',(req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
-  res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");}, {
+  res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");},
+ passport.authenticate('google', {
     successRedirect: '/success',
   }),
   passport.authenticate('google', {
