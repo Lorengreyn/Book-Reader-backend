@@ -32,9 +32,7 @@ router.get('/logout', authenticate, ctrlWrapper(ctrl.logout));
 router.get('/current', authenticate, ctrlWrapper(ctrl.current));
 
 // GOOGLE
-router.get('/', (req, res)=>{
-  res.redirect('/api/users/google')
-})
+
 router.get(
   '/google', 
    passport.authenticate('google', {
@@ -52,8 +50,8 @@ router.get(
     failureRedirect: '/api/users/failed',
   }));
 
-router.get('/success', isLoggedIn (req, res) => {
- res.redirect('http://localhost:3000/book-reader-frontend/library')
+router.get('/success', (req, res) => {
+ res.redirect('http://localhost:3000/book-reader-frontend/library'), 
 });
 
 router.get('/failed', (req, res) => {
