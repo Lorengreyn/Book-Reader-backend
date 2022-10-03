@@ -31,11 +31,13 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
 app.use(logger(formatsLogger));
-app.use(cors());
+app.use(cors({origin:'*'}));
 app.use(express.json());
 app.use(express.static('public'));
 
-app.use('/api/users', authRouter);
+app.use('/api/users',(req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');},
+   authRouter);
 app.use('/api/books', booksRouter);
 app.use('/api/training', trainingRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
