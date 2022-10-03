@@ -42,8 +42,8 @@ router.get(
 
 router.get(
   '/google/callback',(req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "*");},
+    res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "*");},
  passport.authenticate('google', {
     successRedirect: '/success',
   }),
