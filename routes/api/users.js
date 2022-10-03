@@ -3,7 +3,7 @@ const express = require('express');
 
 const ctrl = require('../../controllers/users');
 
-const { ctrlWrapper, isLoggedIn } = require('../../helpers');
+const { ctrlWrapper} = require('../../helpers');
 
 const { validationBody, authenticate } = require('../../middlewares');
 
@@ -51,7 +51,7 @@ router.get(
   }));
 
 router.get('/success', (req, res) => {
- res.redirect('http://localhost:3000/book-reader-frontend/library'), 
+ res.redirect('http://localhost:3000/book-reader-frontend/library');
 });
 
 router.get('/failed', (req, res) => {
