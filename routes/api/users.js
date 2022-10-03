@@ -42,7 +42,7 @@ router.get(
 );
 
 router.get(
-  '/google/callback',cors(),
+  '/google/callback',cors(),(req, res) => {res.set('Access-Control-Allow-Origin', '*');},
   passport.authenticate('google', {
     successRedirect: '/success',
   }),
