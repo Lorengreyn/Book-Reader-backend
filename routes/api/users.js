@@ -43,7 +43,7 @@ router.get(
 router.get(
   '/google/callback',
  passport.authenticate('google', {
-    successRedirect: '/library',
+    successRedirect: 'http://localhost:3000/book-reader-frontend/library',
   }),
   passport.authenticate('google', {
     failureRedirect: '/api/users/failed',
