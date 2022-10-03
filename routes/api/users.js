@@ -40,23 +40,20 @@ router.get(
   }),
 );
 
-router.get(
-  '/google/callback',
- passport.authenticate('google', {
-    successRedirect: '/api/users/success',
-    
-  }),
-  passport.authenticate('google', {
-    
-    failureRedirect: '/api/users/failed',
-  }));
-
-router.get('/success', (req, res) => {
- res.redirect('http://localhost:3000/book-reader-frontend/library');
+router.get('/google/callback', passport.authenticate('google'), (req, res) => {
+  res.redirect('http://localhost:3000/library');
 });
+//   passport.authenticate('google', {
+    
+//     failureRedirect: '/api/users/failed',
+//   }));
 
-router.get('/failed', (req, res) => {
-  res.status(418).send(`Sorry something wrong`);
-});
+// router.get('/success', (req, res) => {
+//  res.redirect('http://localhost:3000/book-reader-frontend/library');
+// });
+
+// router.get('/failed', (req, res) => {
+//   res.status(418).send(`Sorry something wrong`);
+// });
 
 module.exports = router;
