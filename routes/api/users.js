@@ -35,11 +35,11 @@ router.get('/current', authenticate, ctrlWrapper(ctrl.current));
 
 router.get(
   '/google', (req, res) => {
-    res.set('Access-Control-Allow-Origin', '*');},
-  passport.authenticate('google', {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.send(passport.authenticate('google', {
     scope: ['email', 'profile'],
   }),
-);
+)});
 
 router.get(
   '/google/callback',(req, res) => {res.set('Access-Control-Allow-Origin', '*');},
