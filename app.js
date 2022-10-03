@@ -13,6 +13,10 @@ const booksRouter = require('./routes/api/books');
 const trainingRouter = require('./routes/api/training');
 
 const app = express();
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200
+}
 
 app.use(
   cookieSession({
@@ -31,13 +35,11 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
 app.use(logger(formatsLogger));
-app.use(cors({
-  origin: '*'
-}));
+app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-app.use('/api/users', authRouter);
+app.use('/api/users',cors(corsOptions), authRouter);
 app.use('/api/books', booksRouter);
 app.use('/api/training', trainingRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
