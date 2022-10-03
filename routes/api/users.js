@@ -41,7 +41,7 @@ router.get(
 );
 
 router.get('/google/callback', passport.authenticate('google'), (req, res) => {
-  res.redirect('http://localhost:3000/library');
+  res.redirect('http://localhost:3000/book-reader-frontend/library');
 });
 //   passport.authenticate('google', {
     
