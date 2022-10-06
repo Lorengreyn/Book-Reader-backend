@@ -17,12 +17,9 @@ const statistic = async (req, res) => {
   const start = moment(currentDate.replace(/[.]/g, ''));
 
   const diff = start.diff(finish, 'days');
-console.log(diff);
- 
-
-  
 
   let date;
+  
   if (training.dateNow.length !== 0) {
     date = training.dateNow[training.dateNow.length - 1];
     if (factDate === date.factDate) {

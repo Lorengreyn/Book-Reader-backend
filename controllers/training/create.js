@@ -6,9 +6,7 @@ const moment = require('moment');
 
 const create = async (req, res) => {
   const { _id: owner } = req.user;
-  const { books: booksToTrain, startDate, finishDate } = req.body;
-
-  
+  const { books: booksToTrain, startDate, finishDate } = req.body;  
 
   const findBooks = await Book.find({ owner });
 
@@ -29,7 +27,6 @@ const create = async (req, res) => {
 
   const plannedPages = Math.round(totalPages / days);
   const noTraining = await Training.find({owner});
-  console.log(noTraining);
   if(noTraining.length !== 0){
     throw RequestError(409,`Training already exist!`);
   } else{
