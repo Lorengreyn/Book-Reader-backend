@@ -17,8 +17,8 @@ const current = async (req, res) => {
     RequestError(401, 'Unauthorized');
   }
   const {_id: owner} = req.user;
- const book = await Book.find({owner},"-createdAt -updatedAt").populate();
- const training = await Training.find({owner},"-createdAt -updatedAt").populate();
+ const book = await Book.find({owner},"-createdAt -updatedAt");
+ const training = await Training.find({owner},"-createdAt -updatedAt");
 
   res.json({
     name: user.name,

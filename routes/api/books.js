@@ -33,6 +33,4 @@ router.patch(
   ctrlWrapper(ctrl.updateById),
 );
 
-router.delete('/:id', isValidId, ctrlWrapper(ctrl.deleteById));
-
 module.exports = router;
