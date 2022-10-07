@@ -41,7 +41,7 @@ router.get(
 
 router.get('/google/callback', passport.authenticate('google'), (req, res) => {
   res.redirect(
-    `http://localhost:3000/library?token=${req.user.token}&name=${req.user.name}&${req.user.email}`,
+    `http://localhost:3000/login?token=${req.user.token}&name=${req.user.name}&${req.user.email}`,
   );
 });
 //   passport.authenticate('google', {
