@@ -1,7 +1,6 @@
 {
   "openapi": "3.0.1",
   "info": {
-
     "version": "1.2.1",
 
     "title": "Documentation for Book Reader",
@@ -754,7 +753,7 @@
             "example": "2022.10.10"
           },
           "pages": {
-            "type": "string",
+            "type": "number",
             "description": "Number of pages",
             "example": 100
           }

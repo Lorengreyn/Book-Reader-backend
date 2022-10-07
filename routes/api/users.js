@@ -1,9 +1,8 @@
 const express = require('express');
 
-
 const ctrl = require('../../controllers/users');
 
-const { ctrlWrapper} = require('../../helpers');
+const { ctrlWrapper } = require('../../helpers');
 
 const { validationBody, authenticate } = require('../../middlewares');
 
@@ -34,17 +33,19 @@ router.get('/current', authenticate, ctrlWrapper(ctrl.current));
 // GOOGLE
 
 router.get(
-  '/google', 
-   passport.authenticate('google', {
+  '/google',
+  passport.authenticate('google', {
     scope: ['email', 'profile'],
   }),
 );
 
 router.get('/google/callback', passport.authenticate('google'), (req, res) => {
-  res.redirect('http://localhost:3000/book-reader-frontend/library');
+  res.redirect(
+    `http://localhost:3000/library?token=${req.user.token}&name=${req.user.name}&${req.user.email}`,
+  );
 });
 //   passport.authenticate('google', {
-    
+
 //     failureRedirect: '/api/users/failed',
 //   }));
 
