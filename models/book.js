@@ -65,7 +65,7 @@ const addSchema = Joi.object({
 const updateStatusSchema = Joi.object({
   subscription: Joi.string().label('Status Type').valid('plan', 'read', 'done'),
   readPages: Joi.number(),
-
+  rating: Joi.number().max(5).optional(),
   resume: Joi.string().required(),
 });
 const schemas = {
