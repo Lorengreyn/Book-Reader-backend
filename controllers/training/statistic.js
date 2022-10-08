@@ -8,8 +8,6 @@ const statistic = async (req, res) => {
   const { id } = req.params;
   const { factDate, pages } = req.body;
 
-  const momentDate = moment(factDate).format('yyyy.MM.DD');
-  
   const time = moment().format('HH:mm:ss');
   const training = await Training.findOne({ _id: id });
 
@@ -24,20 +22,20 @@ const statistic = async (req, res) => {
   
   if (training.dateNow.length !== 0) {
     date = training.dateNow[training.dateNow.length - 1];
-    if (factDate === date.momentDate) {
-      date.momentDate = factDate;
+    if (factDate === date.factDate) {
+      date.factDate = factDate;
       date.time = time;
       date.pages += pages;
     } else {
       training.dateNow.push({
-        factDate: momentDate,
+        factDate: factDate,
         time: time,
         pages: pages,
       });
     }
   } else {
     training.dateNow.push({
-      factDate: momentDate,
+      factDate: factDate,
       time: time,
       pages: pages,
     });
