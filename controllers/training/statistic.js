@@ -25,7 +25,7 @@ const statistic = async (req, res) => {
   if (training.dateNow.length !== 0) {
     date = training.dateNow[training.dateNow.length - 1];
     if (factDate === date.momentDate) {
-      date.factDate = momentDate;
+      date.momentDate = factDate;
       date.time = time;
       date.pages += pages;
     } else {
