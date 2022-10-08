@@ -45,23 +45,4 @@ router.get('/google/callback', passport.authenticate('google'), (req, res) => {
   );
 });
 
-// router.get('/google/callback', passport.authenticate('google'), (req, res) => {
-// res.redirect(
-//    `http://localhost:3000/login?token=${req.user.token}&name=${req.user.name}&${req.user.email}`,
-//  );
-// });
-
-//   passport.authenticate('google', {
-
-//     failureRedirect: '/api/users/failed',
-//   }));
-
-// router.get('/success', (req, res) => {
-//  res.redirect('http://localhost:3000/book-reader-frontend/library');
-// });
-
-// router.get('/failed', (req, res) => {
-//   res.status(418).send(`Sorry something wrong`);
-// });
-
 module.exports = router;
