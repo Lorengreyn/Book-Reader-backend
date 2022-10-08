@@ -33,7 +33,7 @@ const trainingSchema = new Schema(
       type: String,
     },
     plannedPages: {
-      type: String,
+      type: Number,
       default: 0,
     },
     factPages: {
