@@ -13,13 +13,13 @@ const statistic = async (req, res) => {
 
   const finish = training.finishDate;
   const currentDate = moment().format('yyyy.MM.DD');
-  
+
   const start = moment(currentDate.replace(/[.]/g, ''));
 
   const diff = start.diff(finish, 'days');
 
   let date;
-  
+
   if (training.dateNow.length !== 0) {
     date = training.dateNow[training.dateNow.length - 1];
     if (factDate === date.factDate) {
@@ -81,9 +81,9 @@ const statistic = async (req, res) => {
   if (diff > 0) {
     await Training.findById({ _id: id });
     res.json(diffPages);
-  }else  if (result.totalPages === result.factPages) {
-    res.status(200).json({ message: 'Мои витаннячка' });
-      await Training.deleteOne({ _id: id });
+  } else if (result.totalPages === result.factPages) {
+    res.status(200).json({ message: 'Мои витаннячка', inProcess: false });
+    await Training.deleteOne({ _id: id });
   } else {
     res.status(201).json(result);
   }
