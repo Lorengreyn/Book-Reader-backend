@@ -82,7 +82,7 @@ const statistic = async (req, res) => {
     await Training.findById({ _id: id });
     res.json(diffPages);
   } else if (result.totalPages === result.factPages) {
-    res.status(200).json({ message: 'Мои витаннячка', inProcess: false });
+    res.status(200).json({ inProgress: false });
     await Training.deleteOne({ _id: id });
   } else {
     res.status(201).json(result);
