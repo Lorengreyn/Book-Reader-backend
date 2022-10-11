@@ -84,7 +84,7 @@ const statistic = async (req, res) => {
   } else if (result.totalPages === result.factPages) {
     result.inProgress = false;
     await result.save();
-    res.status(200).json({ result });
+    res.status(200).json(result);
     await Training.deleteOne({ _id: id });
   } else {
     res.status(201).json(result);
